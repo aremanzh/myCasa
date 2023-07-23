@@ -106,6 +106,7 @@ export const Featured = ({ listing }) => {
   );
 
   const [selectedId, setSelectedId] = useState();
+  const [like, setLike] = useState([]);
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#fefefe';
@@ -116,7 +117,7 @@ export const Featured = ({ listing }) => {
     return (
       <Item
         item={item}
-        onPress={() => { setSelectedId(item.id); alert("you clicked this post") }}
+        onPress={() => { setSelectedId(item.id); setLike(prevState => !prevState) }}
         backgroundColor={backgroundColor}
         textColor={color}
         title={title}

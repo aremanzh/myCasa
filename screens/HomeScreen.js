@@ -67,7 +67,7 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <ScrollView style={{ flex: 1 }}>
       <ImageBackground source={{ uri: "https://picsum.photos/200" }} style={{ paddingVertical: 20 }} blurRadius={5} >
         <TouchableOpacity style={{ justifyContent: "center", alignItems: "center", marginVertical: 10 }} onPress={() => alert("You trying to view the image?")}>
           <Image source={{ uri: "https://img.freepik.com/free-icon/user_318-159711.jpg" }} style={{ width: 100, height: 100 }}
@@ -119,7 +119,7 @@ const ProfileScreen = () => {
         </View>
       </View>
 
-    </View>
+    </ScrollView>
   )
 }
 const SearchListing = ({ listing }) => {
@@ -129,7 +129,7 @@ const SearchListing = ({ listing }) => {
   return (
     <>
       <View style={{ flexGrow: 1, justifyContent: "center", alignItems: "center", marginTop: 10 }}>
-        <Image source={require("../assets/flame.png")} style={{ width: 40, height: 40 }} />
+        <Image source={require("../assets/mycasa-icon-2.png")} style={{ width: 40, height: 40 }} />
         <Input
           inputContainerStyle={{
             borderTopWidth: 0,

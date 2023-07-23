@@ -8,9 +8,9 @@ export default {
     platforms: ['ios', 'android'],
     version: '0.15.0',
     orientation: 'portrait',
-    icon: './assets/flame.png',
+    icon: './assets/mycasa-icon-2.png',
     splash: {
-      image: './assets/splash.png',
+      image: './assets/mycasa-splash-2.png',
       resizeMode: 'cover',
       backgroundColor: '#F57C00'
     },
