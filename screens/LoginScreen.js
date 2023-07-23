@@ -11,14 +11,22 @@ import { loginValidationSchema } from '../utils';
 
 export const LoginScreen = ({ navigation }) => {
   const [errorState, setErrorState] = useState('');
+  const [loading, setLoading] = useState(false);
   const { passwordVisibility, handlePasswordVisibility, rightIcon } =
     useTogglePasswordVisibility();
 
   const handleLogin = values => {
     const { email, password } = values;
-    signInWithEmailAndPassword(auth, email, password).catch(error =>
-      setErrorState(error.message)
-    );
+    setLoading(true);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setErrorState(error.message)
+        setLoading(false);
+      }
+      );
   };
   return (
     <>
@@ -87,7 +95,7 @@ export const LoginScreen = ({ navigation }) => {
                 ) : null}
                 {/* Login button */}
                 <Button style={styles.button} onPress={handleSubmit}>
-                  <Text style={styles.buttonText}>Login</Text>
+                  <Text style={styles.buttonText}>{loading ? "Please Wait..." : "Login"}</Text>
                 </Button>
               </>
             )}
@@ -108,12 +116,6 @@ export const LoginScreen = ({ navigation }) => {
         </KeyboardAwareScrollView>
       </View>
 
-      {/* App info footer */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Expo Firebase Starter App (based on managed workflow)
-        </Text>
-      </View>
     </>
   );
 };
@@ -131,18 +133,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     color: Colors.black,
-    paddingTop: 20
-  },
-  footer: {
-    backgroundColor: Colors.white,
-    paddingHorizontal: 12,
-    paddingBottom: 48,
-    alignItems: 'center'
-  },
-  footerText: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Colors.orange
+    paddingTop: 20,
+    textAlign: 'center'
   },
   button: {
     width: '100%',

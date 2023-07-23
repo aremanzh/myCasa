@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { serverTimestamp, getFirestore, doc, setDoc } from 'firebase/firestore';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { View, TextInput, Logo, Button, FormErrorMessage } from '../components';
@@ -11,6 +12,7 @@ import { signupValidationSchema } from '../utils';
 
 export const SignupScreen = ({ navigation }) => {
   const [errorState, setErrorState] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const {
     passwordVisibility,
@@ -22,11 +24,32 @@ export const SignupScreen = ({ navigation }) => {
   } = useTogglePasswordVisibility();
 
   const handleSignup = async values => {
-    const { email, password } = values;
+    const { name, email, password } = values;
 
-    createUserWithEmailAndPassword(auth, email, password).catch(error =>
-      setErrorState(error.message)
-    );
+    setLoading(true);
+
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        if (user) {
+          let valueDataCopy = { ...values };
+          delete valueDataCopy.password;
+          delete valueDataCopy.confirmPassword;
+
+          updateProfile(user, {
+            displayName: name,
+          })
+
+          valueDataCopy.timestamp = serverTimestamp();
+
+          setDoc(doc(getFirestore(), "users", user.uid), valueDataCopy);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        setErrorState(error.message);
+        setLoading(false);
+      });
   };
 
   return (
@@ -40,6 +63,7 @@ export const SignupScreen = ({ navigation }) => {
         {/* Formik Wrapper */}
         <Formik
           initialValues={{
+            name: '',
             email: '',
             password: '',
             confirmPassword: ''
@@ -58,13 +82,26 @@ export const SignupScreen = ({ navigation }) => {
             <>
               {/* Input fields */}
               <TextInput
+                name='name'
+                leftIconName='account'
+                placeholder='Enter name'
+                autoCapitalize='words'
+                keyboardType='default'
+                textContentType='none'
+                autoFocus={true}
+                value={values.name}
+                onChangeText={handleChange('name')}
+                onBlur={handleBlur('name')}
+              />
+              <FormErrorMessage error={errors.name} visible={touched.name} />
+              <TextInput
                 name='email'
                 leftIconName='email'
                 placeholder='Enter email'
                 autoCapitalize='none'
                 keyboardType='email-address'
                 textContentType='emailAddress'
-                autoFocus={true}
+                autoFocus={false}
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
@@ -112,7 +149,7 @@ export const SignupScreen = ({ navigation }) => {
               ) : null}
               {/* Signup button */}
               <Button style={styles.button} onPress={handleSubmit}>
-                <Text style={styles.buttonText}>Signup</Text>
+                <Text style={styles.buttonText}>{loading ? (<Text>Please wait...</Text>) : (<Text>Signup</Text>)}</Text>
               </Button>
             </>
           )}
@@ -142,7 +179,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     color: Colors.black,
-    paddingTop: 20
+    paddingTop: 20,
+    textAlign: 'center'
   },
   button: {
     width: '100%',
