@@ -62,7 +62,7 @@ export const Featured = ({ listing }) => {
         >
           <Icon name={`heart${solid}`} size={24} color="#fff" style={{ position: "absolute", right: 20, top: 20 }} />
 
-          <View style={{ position: "absolute", right: 0, bottom: 0, backgroundColor: "#f22", paddingHorizontal: 20, paddingVertical: 8, borderTopLeftRadius: 5 }}>
+          <View style={{ position: "absolute", right: 0, bottom: 0, backgroundColor: "#141b5c", paddingHorizontal: 20, paddingVertical: 8, borderTopLeftRadius: 15 }}>
             <Text style={{ color: "#fff", }}>RM140 / month</Text>
           </View>
 

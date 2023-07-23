@@ -10,7 +10,7 @@ import useSearch from "../hooks/useSearch";
 import { ListingContext } from "../context/ListingContext";
 import { Divider, FAB, Image, Input } from '@rneui/themed';
 
-import { auth } from '../config';
+import { Colors, auth } from '../config';
 import { Icon } from '../components';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from 'react-native';
@@ -20,6 +20,8 @@ import { HouseScreen } from './HouseScreen';
 import { RoomScreen } from './RoomScreen';
 import { ImageBackground } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+
+
 
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +44,7 @@ const CurrentListing = ({ navigation }) => {
         style={{ margin: 20 }}
         placement="right"
         size="small"
-        overlayColor="#454545"
+        color={Colors.blue}
         icon={{ name: "add", color: "#fff" }}
         onPress={() => navigation.navigate("Add")}
       />
@@ -115,7 +117,7 @@ const ProfileScreen = () => {
         </View>
 
         <View style={{ paddingVertical: 8 }}>
-          <Button title='Signout' onPress={handleLogout}></Button>
+          <Button title='Signout' onPress={handleLogout} color={Colors.blue}></Button>
         </View>
       </View>
 

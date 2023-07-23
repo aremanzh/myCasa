@@ -12,7 +12,7 @@ export default {
     splash: {
       image: './assets/mycasa-splash-2.png',
       resizeMode: 'cover',
-      backgroundColor: '#F57C00'
+      backgroundColor: '#141b5c'
     },
     updates: {
       fallbackToCacheTimeout: 0
